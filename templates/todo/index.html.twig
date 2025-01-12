@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Todo index{% endblock %}
+
+{% block body %}
+    <h1>Todo index</h1>
+    <p>trier ?</p>
+    <div>
+	<button class="btn btn-info" style="background: #2c3e50">
+            <a href="{{ path('app_todo_index') }}" style="color:white; text-decoration:none;">Tous</a>
+        </button>
+        <button class="btn btn-info" style="background: #2c3e50">
+            <a href="{{ path('app_todo_sort', { etat: 'en_attente' }) }}" style="color:white; text-decoration:none;">En attente</a>
+        </button>
+        <button class="btn btn-info" style="background: #2c3e50">
+            <a href="{{ path('app_todo_sort', { etat: 'en_cours' }) }}" style="color:white; text-decoration:none;">En cours</a>
+        </button>
+        <button class="btn btn-info" style="background: #2c3e50">
+            <a href="{{ path('app_todo_sort', { etat: 'termine' }) }}" style="color:white; text-decoration:none;">Terminé</a>
+        </button>
+    </div>
+
+    <table class="table" border>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Libelle</th>
+                <th>Etat</th>
+                <th>Montrer</th>
+                <th>Modifier</th>
+                <th>Supprimer</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for todo in todos %}
+                <tr>
+                    <td>{{ todo.id }}</td>
+                    <td>{{ todo.libelle }}</td>
+                    <td>{{ todo.etat }}</td>
+                    <td>
+                        <button class="btn btn-secondary">
+                            <a href="{{ path('app_todo_show', {'id': todo.id}) }}" style="color:white; text-decoration:none;">
+                                <i class="fas fa-camera"></i>
+                            </a>
+                        </button>
+                    </td>
+
+                    <td>
+                        <button class="btn btn-primary">
+                            <a href="{{ path('app_todo_edit', {'id': todo.id}) }}" style="color:white; text-decoration:none;">
+                                <i class="fas fa-pencil-alt" style="color:white"></i>
+                            </a>
+                        </button>
+                    </td>
+
+                    <td>
+                        <form action="{{ path('app_todo_delete2', {'id': todo.id}) }}" method="get" style="display: inline;">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash-alt" style="color:white"></i>
+                            </button>
+                        </form>
+                    </td>
+
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">No records found</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <button class="btn btn-success"  style="background: #2c3e50">
+        <a href="{{ path('app_todo_new') }}" style="color:white; text-decoration:none;">créer nouvelle tache</a>
+    </button>
+{% endblock %}

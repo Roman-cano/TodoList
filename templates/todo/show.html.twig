@@ -1,0 +1,103 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Todo{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <!-- Titre de la page -->
+        <h1 class="text-center mb-4 text-primary">Todo</h1>
+
+        <!-- Tableau des informations Todo -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Id</th>
+                            <td>{{ todo.id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Libelle</th>
+                            <td>{{ todo.libelle }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Boutons avec liens -->
+        <div class="text-center mb-4">
+            <a href="{{ path('app_todo_index') }}" class="btn btn-primary" style="background-color: #2c3e50; border-radius: 8px; padding: 12px 24px; font-size: 16px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: background-color 0.3s;">
+                Back to List
+            </a>
+
+            <a href="{{ path('app_todo_edit', {'id': todo.id}) }}" class="btn btn-warning ml-3" style="background-color: #f39c12; border-radius: 8px; padding: 12px 24px; font-size: 16px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: background-color 0.3s; color: white;">
+                Edit
+            </a>
+        </div>
+
+        <!-- Formulaire de suppression -->
+        <div class="text-center form-delete mt-4">
+            {{ include('todo/_delete_form.html.twig') }}
+        </div>
+    </div>
+
+    <style>
+        /* Style global de la page */
+        body {
+            background-color: #f4f6f9;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Effet au survol des boutons */
+        .btn:hover {
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Style des boutons Back to List et Edit */
+        .btn-primary, .btn-warning {
+            font-size: 16px;
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, box-shadow 0.3s;
+            margin: 5px;
+        }
+
+        /* Effet au survol pour le bouton Back to List */
+        .btn-primary:hover {
+            background-color: #34495e;
+        }
+
+        /* Effet au survol pour le bouton Edit */
+        .btn-warning:hover {
+            background-color: #e67e22;
+        }
+
+        /* Style du tableau */
+        .table {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .table-bordered {
+            border: 1px solid #ccc;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-top: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f9f9f9;
+            font-weight: bold;
+        }
+
+        a {
+            width: 200px;
+        }
+    </style>
+{% endblock %}
