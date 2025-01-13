@@ -6,6 +6,8 @@ use App\Entity\Todo;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+
 
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,6 +18,7 @@ class TodoType extends AbstractType
     {
         $builder
             ->add('libelle')
+            
             ->add('etat', ChoiceType::class, [
                 'label' => 'État',
                 'choices' => [
@@ -23,7 +26,9 @@ class TodoType extends AbstractType
                     'En cours' => 'en_cours',
                     'Terminé' => 'termine',
                 ],
-            ]);
+            ])
+            ->add('ajouter', SubmitType::class);
+          
         
     }
 

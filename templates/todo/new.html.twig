@@ -3,37 +3,7 @@
 {% block title %}Create New Todo{% endblock %}
 
 {% block body %}
-    <div class="container py-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card shadow-lg border-0 rounded-lg">
-                    <div class="card-header text-center bg-primary text-white">
-                        <h2 class="mb-0">Create a New Todo</h2>
-                    </div>
-                    <div class="card-body p-5">
-                        <form method="post">
-                            <div class="mb-4">
-                                <label for="libelle" class="form-label fs-4">Task Title</label>
-                                <input type="text" id="libelle" name="libelle" class="form-control form-control-lg" placeholder="Enter task title" required>
-                            </div>
-
-                            <div class="mb-4">
-                                <label for="etat" class="form-label fs-4">Status</label>
-                                <select id="etat" name="etat" class="form-control form-control-lg" required>
-                                    <option value="en_attente">Pending</option>
-                                    <option value="en_cours">In Progress</option>
-                                    <option value="termine">Completed</option>
-                                </select>
-                            </div>
-
-                            <div class="d-flex justify-content-between">
-                                <button type="submit" class="btn btn-success btn-lg w-48" style="border-radius: 25px; font-weight: bold;">Save Todo</button>
-                                <a href="{{ path('app_todo_index') }}" class="btn btn-outline-secondary btn-lg w-48" style="border-radius: 25px; font-weight: bold;">Back to List</a>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    {# templates/task/new.html.twig #}
+{{ form(form) }}
+                    
 {% endblock %}
