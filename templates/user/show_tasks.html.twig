@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tâches de {{ user.prenom }}{% endblock %}
+
+{% block body %}
+    {% include 'partials/menu.html.twig' %}
+    <div class="container mt-5">
+        <h1>Tâches de {{ user.prenom }} {{ user.nom }}</h1>
+
+        {% if tasks|length > 0 %}
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Libellé</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                {% for task in tasks %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ task.libelle }}</td>
+
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Aucune tâche associée.</p>
+        {% endif %}
+
+        <a href="{{ path('app_user_index') }}" class="btn btn-primary">Retour à la liste des utilisateurs</a>
+    </div>
+{% endblock %}

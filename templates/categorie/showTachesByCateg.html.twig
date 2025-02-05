@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tâches de la catégorie{% endblock %}
+
+{% block body %}
+    {% include 'partials/menu.html.twig' %}
+    <h1>Liste des tâches de la catégorie</h1>
+
+    {% if todos is empty %}
+        <p>Aucune tâche trouvée pour cette catégorie.</p>
+    {% else %}
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Libellé</th>
+                <th>État</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for todo in todos %}
+                <tr>
+                    <td>{{ todo.id }}</td>
+                    <td>{{ todo.libelle }}</td>
+                    <td>
+                        {% if todo.etat == 'en_attente' %}
+                            ⏳ En attente
+                        {% elseif todo.etat == 'en_cours' %}
+                            ⚙️ En cours
+                        {% else %}
+                            ✅ Terminé
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ path('app_todo_show', {'id': todo.id}) }}">Voir</a> |
+                        <a href="{{ path('app_todo_edit', {'id': todo.id}) }}">Modifier</a>
+
+                    </td>
+                    <td>
+                        <a href="{{ path('app_todo_complete', {'id': todo.id}) }}" style="text-decoration: none;">
+                            <button class="btn btn-primary">
+                                <i class="fas fa-check" style="color:white"></i>
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    <a href="{{ path('app_categorie_index') }}">Retour aux catégories</a>
+{% endblock %}

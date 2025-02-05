@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Categorie;
+use App\Entity\Todo;
+
 use App\Form\CategorieType;
 use App\Repository\CategorieRepository;
+use App\Repository\TodoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -56,6 +59,18 @@ class CategorieController extends AbstractController
         ]);
     }
 
+
+    /**
+     * @Route("/{id}/tasks", name="app_categorie_tasks", methods={"GET"})
+     */
+        public function tasks(Categorie $categorie, TodoRepository $todoRepository): Response
+        {
+            $todos = $categorie->getTodos();
+            return $this->render('categorie/showTachesByCateg.html.twig', [
+                'todos' => $todos,
+            ]);
+        }
+
     /**
      * @Route("/{id}/edit", name="app_categorie_edit", methods={"GET", "POST"})
      */
@@ -79,9 +94,14 @@ class CategorieController extends AbstractController
     /**
      * @Route("/{id}", name="app_categorie_delete", methods={"POST"})
      */
-    public function delete(Request $request, Categorie $categorie, CategorieRepository $categorieRepository): Response
+    public function delete(Request $request, Categorie $categorie, CategorieRepository $categorieRepository, TodoRepository $todoRepository): Response
     {
+
         if ($this->isCsrfTokenValid('delete'.$categorie->getId(), $request->request->get('_token'))) {
+            $taches = $categorie->getTodos();
+            foreach ($taches as $tache) {
+                $todoRepository->remove($tache);
+            }
             $categorieRepository->remove($categorie, true);
         }
 

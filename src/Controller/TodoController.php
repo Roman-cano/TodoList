@@ -28,6 +28,24 @@ class TodoController extends AbstractController
     }
 
 
+
+    /**
+     * @Route("/todo/{id}/user", name="app_todo_show_user")
+     */
+    public function showUser(Todo $todo): Response
+    {
+        // Tu peux ajouter la logique pour récupérer l'utilisateur associé à cette tâche si nécessaire.
+        // Par exemple, pour afficher les utilisateurs associés à cette tâche :
+        $users = $todo->getUsers();
+
+        // Afficher la page avec les informations de la tâche et des utilisateurs associés
+        return $this->render('todo/show_user.html.twig', [
+            'todo' => $todo,
+            'users' => $users,
+        ]);
+    }
+
+
 /**
  * @Route("/sort/{etat}", name="app_todo_sort", methods={"GET"})
  */
@@ -47,11 +65,19 @@ public function sortByEtat(string $etat, TodoRepository $todoRepository): Respon
     public function new(Request $request, TodoRepository $todoRepository): Response
     {
         $todo = new Todo();
+
         $form = $this->createForm(TodoType::class, $todo);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $users = $form->get('users')->getData();
+            foreach ($users as $user) {
+
+                $user->addTodo($todo);
+                $todo->addUser($user); // Ajoute l'utilisateur à la tâche
+            }
             $todoRepository->add($todo, true);
+
 
             return $this->redirectToRoute('app_todo_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -80,11 +106,15 @@ public function sortByEtat(string $etat, TodoRepository $todoRepository): Respon
         $form = $this->createForm(TodoType::class, $todo);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $todoRepository->add($todo, true);
+        $users = $form->get('users')->getData();
+        $lesUti = $todo->getUsers();
 
-            return $this->redirectToRoute('app_todo_index', [], Response::HTTP_SEE_OTHER);
+        foreach ($users as $user) {
+
+            $user->addTodo($todo);
+            $todo->addUser($user); // Ajoute l'utilisateur à la tâche
         }
+        $todoRepository->add($todo, true);
 
         return $this->renderForm('todo/edit.html.twig', [
             'todo' => $todo,
@@ -98,6 +128,10 @@ public function sortByEtat(string $etat, TodoRepository $todoRepository): Respon
     public function delete(Request $request, Todo $todo, TodoRepository $todoRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$todo->getId(), $request->request->get('_token'))) {
+            $lesUtilisateurs = $todo->getUsers();
+            foreach($lesUtilisateurs as $utilisateur) {
+                $todo->removeUser($utilisateur);
+            }
             $todoRepository->remove($todo, true);
         }
 

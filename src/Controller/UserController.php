@@ -82,9 +82,38 @@ class UserController extends AbstractController
     public function delete(Request $request, User $user, UserRepository $userRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+            $lesTaches = $user->getTodos();
+            foreach ($lesTaches as $lesTach) {
+                $user->removeTodo($lesTach);
+            }
             $userRepository->remove($user, true);
         }
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    // src/Controller/UserController.php
+
+    /**
+     * @Route("/user/{id}/tasks", name="app_user_show_tasks", methods={"GET"})
+     */
+    // src/Controller/UserController.php
+
+    /**
+     * @Route("/user/{id}/tasks", name="app_user_show_tasks", methods={"GET"})
+     */
+    public function showTasks(User $user): Response
+    {
+        // Récupérer les tâches associées à l'utilisateur
+        $tasks = $user->getTodos();  // $user->getTodos() pour obtenir les tâches de cet utilisateur
+
+        // Passer l'utilisateur et ses tâches à la vue
+        return $this->render('user/show_tasks.html.twig', [
+            'user' => $user,
+            'tasks' => $tasks,  // Passer les tâches à la vue
+        ]);
+    }
+
+
+
 }
