@@ -12,24 +12,17 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TodoType extends AbstractType
+class TodoSearch extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('libelle')
-            
-            ->add('etat', ChoiceType::class, [
-                'label' => 'État',
-                'choices' => [
-                    'En attente' => 'en_attente',
-                    'En cours' => 'en_cours',
-                    'Terminé' => 'termine',
-                ],
-            ])
-            ->add('update', SubmitType::class);
-          
-        
+
+
+            ->add('search', SubmitType::class);
+
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void

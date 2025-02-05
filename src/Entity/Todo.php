@@ -28,6 +28,11 @@ class Todo
      */
     private  $etat = "En attente" ;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Categorie::class, inversedBy="todos")
+     */
+    private $id_categorie;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -53,6 +58,18 @@ class Todo
     public function setEtat(string $etat): self
     {
         $this->etat = $etat;
+
+        return $this;
+    }
+
+    public function getIdCategorie(): ?Categorie
+    {
+        return $this->id_categorie;
+    }
+
+    public function setIdCategorie(?Categorie $id_categorie): self
+    {
+        $this->id_categorie = $id_categorie;
 
         return $this;
     }

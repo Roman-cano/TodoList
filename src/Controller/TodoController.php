@@ -5,10 +5,12 @@ namespace App\Controller;
 use App\Entity\Todo;
 use App\Form\TodoType;
 use App\Repository\TodoRepository;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+
 
 /**
  * @Route("/todo")
@@ -98,6 +100,22 @@ public function sortByEtat(string $etat, TodoRepository $todoRepository): Respon
         if ($this->isCsrfTokenValid('delete'.$todo->getId(), $request->request->get('_token'))) {
             $todoRepository->remove($todo, true);
         }
+
+        return $this->redirectToRoute('app_todo_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+
+
+    /**
+     * @Route("/{id}/complete", name="app_todo_complete", methods={"GET"})
+     */
+    public function complete(Todo $todo, TodoRepository $todoRepository): Response
+    {
+        // Met à jour l'état de la tâche
+        $todo->setEtat('termine');
+
+        // Utilise ta méthode `completeState` du repository
+        $todoRepository->completeState($todo, true); // Passer `true` pour appeler `flush`
 
         return $this->redirectToRoute('app_todo_index', [], Response::HTTP_SEE_OTHER);
     }

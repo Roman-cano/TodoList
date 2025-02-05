@@ -51,6 +51,17 @@ class TodoRepository extends ServiceEntityRepository
         }
     }
 
+
+    public function completeState(Todo $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity); // Prépare l'entité
+
+        if ($flush) {
+            $this->getEntityManager()->flush(); // Exécute la requête SQL pour sauvegarder
+        }
+    }
+
+
 //    /**
 //     * @return Todo[] Returns an array of Todo objects
 //     */
