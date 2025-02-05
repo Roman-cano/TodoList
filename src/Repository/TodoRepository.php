@@ -62,6 +62,22 @@ class TodoRepository extends ServiceEntityRepository
     }
 
 
+    public function findBySearchCriteria($libelle)
+    {
+        $queryBuilder = $this->createQueryBuilder('t');
+
+        if ($libelle) {
+            $queryBuilder->andWhere('t.libelle LIKE :libelle')
+                ->setParameter('libelle', '%' . $libelle . '%');
+        }
+
+
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+
+
 //    /**
 //     * @return Todo[] Returns an array of Todo objects
 //     */

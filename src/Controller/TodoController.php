@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Todo;
+use App\Form\TodoSearch;
 use App\Form\TodoType;
 use App\Repository\TodoRepository;
 
@@ -18,12 +19,30 @@ use Symfony\Component\HttpFoundation\Response;
 class TodoController extends AbstractController
 {
     /**
-     * @Route("/", name="app_todo_index", methods={"GET"})
+     * @Route("/", name="app_todo_index", methods={"GET", "POST"})
      */
-    public function index(TodoRepository $todoRepository): Response
+    public function index(Request $request, TodoRepository $todoRepository): Response
     {
+        // Créer le formulaire de recherche
+        $form = $this->createForm(TodoSearch::class);
+
+        // Traitement du formulaire
+        $form->handleRequest($request);
+
+        // Récupérer les critères de recherche
+        $libelle = $form->get('libelle')->getData();
+
+
+        // Requête avec filtrage si des critères sont définis
+        if ($form->isSubmitted() && $form->isValid()) {
+            $todos = $todoRepository->findBySearchCriteria($libelle);
+        } else {
+            $todos = $todoRepository->findAll();  // Retourner tous les Todo si pas de filtre
+        }
+
         return $this->render('todo/index.html.twig', [
-            'todos' => $todoRepository->findAll(),
+            'todos' => $todos,
+            'form' => $form->createView(),
         ]);
     }
 
