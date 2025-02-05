@@ -36,7 +36,7 @@ class Todo
     private $id_categorie;
 
     /**
-     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="todos")
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="todos")
      */
     private $users;
 

@@ -45,7 +45,7 @@ class User
     private $phone;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Todo::class, inversedBy="users")
+     * @ORM\ManyToMany(targetEntity=Todo::class, mappedBy="users")
      */
     private $todos;
 
