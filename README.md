@@ -9,6 +9,11 @@ Une application de gestion de tâches construite avec Symfony, utilisant XAMPP e
 - Supprimer des tâches.
 - Marquer les tâches comme terminées.
 - Affichage de la liste de tâches avec un statut de chaque tâche (terminée ou en cours).
+- affecter des utilisateurs à des taches
+- affecter des taches à une catégorie spécifique
+- ajout supression modification categorie
+- ajout supression modification des utiliateurs
+- 
 
 ## Prérequis
 
